@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Outfit";
+  src: url("../assets/fonts/Outfit-VariableFont_wght.ttf");
+}
+
+body {
+  font-family: "Outfit";
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.MuiTypography-root,
+.MuiButton-root,
+.MuiMenuItem-root,
+.MuiSelect-root {
+  font-family: "Outfit" !important;
+}
+.MuiSelect-select {
+  padding-right: 0px;
+}
+
+.MuiListItemIcon-root.css-mvps4j-MuiListItemIcon-root {
+  color: #a1a1a1;
+}
+
+.MuiBox-root .css-zxdg2z {
+  padding: 0px;
+}
+
+.isHover {
+  border-radius: 4px !important;
+  background-color: #c92e2c !important;
+}
+
+.isIcon {
+  color: white !important;
+}
+
+.isText {
+  color: white !important;
+}
+
+.MuiAvatar-root.MuiAvatar-circular.MuiAvatar-colorDefault.css-18k2bs-MuiAvatar-root {
+  width: 100%;
+  border-radius: 4px;
+  height: 218px;
+  font-weight: 600;
+  font-size: 30px;
+}
+.MuiButtonBase-root.MuiButton-root {
+  padding: 0px;
+}
+.scroll {
+  scrollbar-width: none;
+}
+.MuiButtonBase-root.MuiMenuItem-root {
+  padding: 6px 36px;
+  justify-content: center;
+}
+@media only screen and (max-width: 1024px) {
+  .MuiBox-root {
+    height: 100%;
+  }
+}
+
+.MuiInputBase-root {
+  width: 100%;
+  padding: 0;
+  padding-right: 10px;
+  background-color: white;
+  font-size: 14px;
+  color: black;
+  border-color: rgb(229 231 235 / var(--tw-border-opacity, 1));
+  --tw-border-opacity: 1;
+  font-family: "Outfit" !important;
+}
+
+.MuiInputBase-input.MuiOutlinedInput-input {
+  font-family: "Outfit" !important;
+  color: black;
+  font-size: 14px;
+  padding: 10px 15px;
+  border: 0;
+  width: 100%;
+}
+
+.shadow-sm {
+  --tw-shadow: 0;
+}
+.css-1hxbg4u-MuiButtonBase-root-MuiListItemButton-root:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b91c1c !important;
+}
