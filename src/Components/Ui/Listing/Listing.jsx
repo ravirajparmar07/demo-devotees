@@ -299,7 +299,7 @@ const Listing = ({ data }) => {
         </div>
       </div>
       <div className="border-0 rounded-4 bg-white shadow-bs text-center">
-        <div className="py-5 px-6 border-b">
+        <div className="py-5 px-6 border-b text-left">
           <p>Camera View</p>
         </div>
         {/* In use 
@@ -311,7 +311,7 @@ const Listing = ({ data }) => {
           />
         </div> */}
         {/* In use */}
-        {/* <div className="grid grid-cols-12 gap-5 max-sm:gap-3 p-4">
+        <div className="grid grid-cols-12 gap-5 max-sm:gap-3 p-4">
           {CameraView.map((view, index) => (
             <div
               key={index}
@@ -336,8 +336,7 @@ const Listing = ({ data }) => {
               </div>
             </div>
           ))}
-        </div> */}
-        No Data Found
+        </div>
       </div>
     </div>
   );

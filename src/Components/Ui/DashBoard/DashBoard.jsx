@@ -76,7 +76,7 @@ const DashBoard = ({
             className="bg-option py-2.5 px-4 rounded hover:bg-button max-sm:block lg:hidden max-lg:w-full"
             // onClick={handleAddCamera}
           >
-            <div className="flex gap-2 items-center justify-center">
+            <div className="flex gap-2 items-center justify-center max-xs:text-10">
               <span>
                 <Filter />
               </span>
@@ -87,7 +87,7 @@ const DashBoard = ({
             className="bg-option py-2.5 px-4 rounded hover:bg-button w-full max-lg:w-full lg:w-full"
             onClick={handleAddCamera}
           >
-            <div className="flex gap-2 items-center justify-center">
+            <div className="flex gap-2 items-center justify-center max-xs:text-10">
               <span>
                 <Plus />
               </span>

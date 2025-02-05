@@ -46,28 +46,35 @@ const Sidebar = ({ open }) => {
         <p className={`text-white text-xs ${open ? "block" : "hidden"}`}>
           MENU
         </p>
-        <List className="mt-5 text-gray-400 flex flex-col gap-4 text-wrap">
+        <List className="mt-5 text-gray-400 flex flex-col gap-4 text-wrap ">
           {menuItems.map((item, index) => {
             const isActive = router.pathname === item.route;
             return (
-              <ListItem key={index} disablePadding sx={{ display: "block" }}>
+              <ListItem
+                className="hover:bg-red-700 hover:rounded translate-x-0"
+                key={index}
+                disablePadding
+                sx={{ display: "block" }}
+              >
                 <ListItemButton
                   onClick={() => handleNavigation(item.route)}
                   sx={[
                     open
                       ? { justifyContent: "initial" }
                       : { justifyContent: "center" },
+                    isActive
+                      ? { backgroundColor: " #c92e2c", borderRadius: "4px" }
+                      : {},
                   ]}
-                  className={`p-3.5 flex gap-2.5 items-center group hover:rounded cursor-pointer ${
-                    isActive ? "bg-red-700 text-gray-100 rounded isHover" : ""
-                  }`}
+                  className={`p-3.5 flex gap-2.5 items-center group hover:rounded cursor-pointer `}
                 >
                   <ListItemIcon
-                    sx={[{ minWidth: 0, justifyContent: "center" }]}
+                    sx={[
+                      { minWidth: 0, justifyContent: "center" },
+                      isActive ? { color: "white" } : { color: "gray" },
+                    ]}
                     className={`${
-                      isActive
-                        ? "text-gray-100 isIcon"
-                        : "text-gray-400 group-hover:text-gray-100 "
+                      isActive ? "text-white" : "group-hover:text-gray-100 "
                     }`}
                   >
                     {item.icon}
@@ -76,10 +83,11 @@ const Sidebar = ({ open }) => {
                     primary={item.text}
                     sx={[
                       open ? { opacity: 1 } : { opacity: 0, display: "none" },
+                      isActive ? { color: "white" } : { color: "gray" },
                     ]}
                     className={`${
                       isActive
-                        ? "text-gray-100 isText"
+                        ? "text-white"
                         : "text-gray-400 group-hover:text-gray-100"
                     }`}
                   />

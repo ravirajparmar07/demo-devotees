@@ -40,8 +40,16 @@ const InputField = ({ label, name, placeholder, children, type, ...rest }) => {
             name={name}
             placeholder={placeholder}
             {...field}
+            className="text-sm py-1 px-2"
             {...rest}
             sx={{
+              "& .MuiInputBase-input.MuiOutlinedInput-input": {
+                padding: "0 8px",
+                fontSize: "14px",
+                fontFamily: "Outfit",
+                color: "black",
+                width: "100%",
+              },
               "& .MuiOutlinedInput-notchedOutline": {
                 borderColor: meta.touched && meta.error ? "#DC2626" : "#c7c7c7",
               },

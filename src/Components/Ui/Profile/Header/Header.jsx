@@ -8,6 +8,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import { useTheme } from "@emotion/react";
+import { Padding } from "@mui/icons-material";
 
 const Header = ({
   handleProfileClick,

@@ -38,7 +38,7 @@ const TempleCard = ({ image, name, crowdData, id, loading }) => {
 
   return (
     <div className="relative col-span-6 max-sm:col-span-12 border-0 rounded-4 shadow-bs bg-white">
-      <div className="w-full">
+      <div className="w-full h-[218px] flex items-center justify-center bg-[#bdbdbd] font-semibold text-5xl rounded">
         {image ? (
           <img
             src={`${process.env.NEXT_PUBLIC_BASE_URL}${image}`}
@@ -71,7 +71,7 @@ const TempleCard = ({ image, name, crowdData, id, loading }) => {
           className={`flex flex-col gap-5 max-xl:gap-4 max-lg:gap-0 py-9 max-xl:py-7 max-lg:py-5`}
         >
           <p className="text-13 max-xl:text-xs max-lg:text-[10px] text-Dashblack font-normal">
-            Total crowd
+            TOTAL CROWD
           </p>
           <span className="text-3xl max-xl:text-26 max-lg:text-22 max-md:text-22 text-Dashblack2 font-semibold max-lg:font-medium">
             {crowdData?.total_crowd || 0}
@@ -81,7 +81,7 @@ const TempleCard = ({ image, name, crowdData, id, loading }) => {
           className={`flex flex-col gap-5 max-xl:gap-4 max-lg:gap-0 py-9 max-xl:py-7 max-lg:py-5 border-x`}
         >
           <p className="text-13 max-xl:text-xs max-lg:text-[10px] text-Dashblack font-normal">
-            Total In
+            TOTAL IN
           </p>
           <span className="text-3xl max-xl:text-26 max-lg:text-22 max-md:text-22 text-Dashblack2 font-semibold max-lg:font-medium">
             {crowdData?.total_in_count || 0}
@@ -91,7 +91,7 @@ const TempleCard = ({ image, name, crowdData, id, loading }) => {
           className={`flex flex-col gap-5 max-xl:gap-4 max-lg:gap-0 py-9 max-xl:py-7 max-lg:py-5`}
         >
           <p className="text-13 max-xl:text-xs max-lg:text-[10px] text-Dashblack font-normal">
-            Total Out
+            TOTAL OUT
           </p>
           <span className="text-3xl max-xl:text-26 max-lg:text-22 max-md:text-22 text-Dashblack2 font-semibold max-lg:font-medium">
             {crowdData?.total_out_count || 0}
