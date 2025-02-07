@@ -1,47 +1,34 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { baseQuery } from "./baseQuery";
 
 export const RolePermission = createApi({
   reducerPath: "RolePermission",
-  baseQuery: fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
-  }),
+  baseQuery,
   endpoints: (builder) => ({
     getRolePermission: builder.query({
-      query: (token) => ({
+      query: () => ({
         url: "api/role/role-permissions",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       }),
     }),
     addRole: builder.mutation({
-      query: ({ newItem, token }) => ({
+      query: ({ newItem }) => ({
         url: "/role/role-permissions/",
         method: "POST",
         body: newItem,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       }),
     }),
     updateRole: builder.mutation({
-      query: ({ id, updatedData, token }) => ({
+      query: ({ id, updatedData }) => ({
         url: `path${id}`,
         method: "PATCH",
         body: updatedData,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       }),
     }),
     deleteRole: builder.mutation({
-      query: ({ token, deleteId }) => {
+      query: ({ deleteId }) => {
         return {
           url: `/role/role-permissions/${deleteId}/`,
           method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         };
       },
     }),

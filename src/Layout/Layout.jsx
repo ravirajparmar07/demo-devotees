@@ -15,14 +15,20 @@ const MiniDrawer = ({ children }) => {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", minHeight: "100vh" }}>
       <Drawer variant="permanent" open={open} className="max-md:hidden">
         <Sidebar open={open} />
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }} className="">
-        <Header theme={theme} handleDrawerOpen={handleDrawerOpen} />
-        <div className="relative bg-[#D4D4D4] h-calc-full-minus-70 overflow-hidden max-lg:h-full">
-          <div className="relative z-10 p-6 h-full overflow-y-auto hide-scrollbar">
+
+      <Box component="main" sx={{ flexGrow: 1 }} className="overflow-hidden">
+        <Header
+          isSidebarOpen={open}
+          theme={theme}
+          handleDrawerOpen={handleDrawerOpen}
+        />
+
+        <div className="relative bg-[#D4D4D4] overflow-hidden min-h-screen">
+          <div className="relative z-10 p-6 max-h-screen overflow-y-auto hide-scrollbar pt-[90px]">
             {children}
           </div>
         </div>

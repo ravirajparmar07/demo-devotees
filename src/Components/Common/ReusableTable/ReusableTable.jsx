@@ -14,6 +14,8 @@ const ReusableTable = ({
   buttonConfig,
   isLoading,
 }) => {
+  console.log("rows = ", rows);
+
   return (
     <div className="overflow-x-auto max-xs:w-[400px]">
       <div className="bg-white pt-5 overflow-x-auto rounded shadow-md">

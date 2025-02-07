@@ -30,6 +30,7 @@ const UserAccess = ({
   popupData,
   isEditing,
   handleDeleteData,
+  isLoading,
 }) => {
   return (
     <div>
@@ -64,6 +65,7 @@ const UserAccess = ({
         onEditClick={handleEditClick}
         onDeleteClick={handleDeleteClick}
         buttonConfig={{ view: true, edit: true, delete: true }}
+        isLoading={isLoading}
       />
 
       {isPopupOpen && (

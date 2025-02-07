@@ -1,10 +1,9 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { baseQuery } from "./baseQuery";
 
 export const loginSignup = createApi({
   reducerPath: "loginSignup",
-  baseQuery: fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
-  }),
+  baseQuery,
   endpoints: (builder) => ({
     loginUser: builder.mutation({
       query: (userData) => ({
@@ -34,6 +33,13 @@ export const loginSignup = createApi({
         body: userData,
       }),
     }),
+    refreshToken: builder.mutation({
+      query: (refreshToken) => ({
+        url: "api/users/refresh-token/",
+        method: "POST",
+        body: { refreshToken },
+      }),
+    }),
   }),
 });
 
@@ -42,4 +48,5 @@ export const {
   useResetPasswordMutation,
   useLoginUserMutation,
   useRegisterUserMutation,
+  useRefreshTokenMutation,
 } = loginSignup;

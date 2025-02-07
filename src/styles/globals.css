@@ -9,13 +9,6 @@
 
 body {
   font-family: "Outfit";
-}
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.hide-scrollbar {
-  -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
@@ -25,45 +18,15 @@ body {
 .MuiSelect-root {
   font-family: "Outfit" !important;
 }
-/* .MuiSelect-select {
-  padding-right: 0px;
-} */
 
-/* .MuiListItemIcon-root.css-mvps4j-MuiListItemIcon-root {
-  color: #a1a1a1;
-} */
+::-webkit-scrollbar {
+  display: none;
+}
 
 .MuiBox-root .css-zxdg2z {
   padding: 0px;
 }
 
-/* .MuiButtonBase-root.MuiButton-root {
-  padding: 0px;
-} */
-.scroll {
-  scrollbar-width: none;
-}
-/* .MuiButtonBase-root.MuiMenuItem-root {
-  padding: 6px 36px;
-  justify-content: center;
-} */
-/* @media only screen and (max-width: 1024px) {
-  .MuiBox-root {
-    height: 100%;
-  }
-} */
-
-/* .MuiInputBase-root {
-  width: 100%;
-  padding: 0;
-  padding-right: 10px;
-  background-color: white;
-  font-size: 14px;
-  color: black;
-  border-color: rgb(229 231 235 / var(--tw-border-opacity, 1));
-  --tw-border-opacity: 1;
-  font-family: "Outfit" !important;
-} */
 .shadow-sm {
   --tw-shadow: 0;
 }

@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useProfileDataQuery } from "@/Services/myprofile";
 import useAuthToken from "@/Components/Common/CustomHooks/useAuthToken";
 
-const index = ({ handleDrawerOpen }) => {
+const index = ({ handleDrawerOpen, isSidebarOpen }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const token = useAuthToken();
@@ -37,6 +37,7 @@ const index = ({ handleDrawerOpen }) => {
       handleClose={handleClose}
       handleClick={handleClick}
       open={open}
+      isSidebarOpen={isSidebarOpen}
       anchorEl={anchorEl}
       handleDrawerOpen={handleDrawerOpen}
       data={data}

@@ -10,6 +10,7 @@ import {
 import { showToast } from "@/Components/Common/Toaster/Toaster";
 import { useGetTempleDataQuery } from "@/Services/dashboard";
 import useAuthToken from "@/Components/Common/CustomHooks/useAuthToken";
+import { useRouter } from "next/router";
 
 export const validationSchema = Yup.object({
   ip_address: Yup.string().required("IP address is required"),
@@ -24,12 +25,18 @@ const index = () => {
   const [popupData, setPopupData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
+  const [deleteId, setDeleteId] = useState(0);
+  // console.log("deleteId  =", deleteId);
 
   const token = useAuthToken();
 
   const { data, isLoading, refetch } = useCameraDataQuery(token);
 
   const { data: dropdownData } = useGetTempleDataQuery();
+
+  const [deletecamera, { isLoading: isDeleting }] = useDeletecameraMutation();
+
+  const [updateCamera] = useUpdateCameraMutation();
 
   const totalData = Array.isArray(data) ? data.length : 0;
   const itemsPerPage = 7;
@@ -101,6 +108,9 @@ const index = () => {
     setIsPopupOpen(true);
   };
   const handleDeleteClick = (row) => {
+    console.log("row = ", row.id);
+
+    setDeleteId(row.id);
     setIsOpenView(false);
     setPopupData(row);
     setIsDelete(true);
@@ -127,31 +137,35 @@ const index = () => {
     resetForm();
   };
 
-  const [deletecamera, { isLoading: isDeleting }] = useDeletecameraMutation();
-  const [updateCamera] = useUpdateCameraMutation();
+  const handleDeleteData = async () => {
+    console.log("Attempting to delete camera with ID:", deleteId);
 
-  const handleDeleteData = async (cameraId) => {
     try {
-      await deletecamera({ token, cameraId }).unwrap();
+      await deletecamera({ token, deleteId }).unwrap();
+      showToast("success", "Camera deleted successfully.");
+      await refetch();
       handleClosePopup();
     } catch (error) {
       console.error("Error deleting camera:", error);
+      showToast("error", "Failed to delete camera.");
     }
   };
 
   const handleUpdate = async (updatedData) => {
+    console.log("updatedData = ", updatedData);
+
     try {
       const response = await updateCamera({
         cameraId: popupData?.id,
         updatedData: updatedData,
-      });
-      if (response.error) {
-        console.error("Failed to update camera:", response.error);
-      } else {
-        handleClosePopup();
-      }
+      }).unwrap();
+
+      showToast("success", "Camera updated successfully.");
+      await refetch();
+      handleClosePopup();
     } catch (error) {
       console.error("Error updating camera:", error);
+      showToast("error", "Failed to update camera.");
     }
   };
 

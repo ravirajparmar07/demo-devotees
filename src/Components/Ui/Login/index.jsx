@@ -44,6 +44,7 @@ function Index() {
           } else {
             sessionStorage.setItem("authToken", response.access);
           }
+          localStorage.setItem("refreshToken", response.refresh);
           router.push("/dashboard");
         }
       })

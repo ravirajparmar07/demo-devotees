@@ -8,7 +8,6 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import { useTheme } from "@emotion/react";
-import { Padding } from "@mui/icons-material";
 
 const Header = ({
   handleProfileClick,
@@ -17,11 +16,17 @@ const Header = ({
   anchorEl,
   handleDrawerOpen,
   data,
+  isSidebarOpen,
 }) => {
   const theme1 = useTheme();
 
+  console.log(isSidebarOpen, "sidebar");
   return (
-    <div className="flex justify-between px-5 shadow-md max-sm:px-0">
+    <div
+      className={`flex justify-between px-5 shadow-md max-sm:px-0 fixed top-0 bg-white z-50 w-full left-0 right-0  ${
+        !isSidebarOpen ? "pl-[100px]" : "pl-[275px]"
+      }`}
+    >
       <div className="flex justify-between items-center">
         <div className="max-md:hidden md:visible">
           <IconButton
@@ -50,6 +55,7 @@ const Header = ({
           aria-expanded={anchorEl ? "true" : undefined}
           onClick={handleClick}
           className="p-0"
+          sx={{ padding: "0px" }}
           disableRipple
           disableFocusRipple
         >
@@ -99,13 +105,24 @@ const Header = ({
             },
           }}
         >
-          <MenuItem onClick={handleProfileClick} className="px-9">
+          <MenuItem
+            onClick={handleProfileClick}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
             Profile
           </MenuItem>
           <MenuItem
             id="logout-menu-item"
             onClick={handleClose}
-            className="px-9"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
           >
             Logout
           </MenuItem>

@@ -34,10 +34,11 @@ const Sidebar = ({ open }) => {
   const handleNavigation = (route) => {
     router.push(route);
   };
+  console.log(open, "open");
 
   return (
     <div
-      className={`h-screen overflow-hidden bg-gray-900 py-3.5 max-md:hidden max-lg:h-full ${
+      className={`h-[100vh] overflow-hidden bg-gray-900 py-3.5 max-md:hidden max-lg:h-full ${
         open ? "px-5 " : "px-3.5"
       }`}
     >

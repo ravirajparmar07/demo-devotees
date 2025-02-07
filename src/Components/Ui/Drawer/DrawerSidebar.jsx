@@ -35,12 +35,12 @@ const DrawerSidebar = () => {
 
   const list = () => (
     <Box
-      sx={{ width: 250 }}
+      sx={{ width: 250, height: "100%" }}
       role="presentation"
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
     >
-      <div className="h-screen bg-gray-900 px-5 py-3.5 overflow-y-auto max-lg:h-full">
+      <div className="bg-gray-900 px-5 py-3.5 overflow-y-auto max-lg:h-full">
         <Image src={logo} alt="logo" className="block mx-auto" />
 
         <div className="mt-30">

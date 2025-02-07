@@ -10,7 +10,7 @@ import { showToast } from "@/Components/Common/Toaster/Toaster";
 import useAuthToken from "@/Components/Common/CustomHooks/useAuthToken";
 
 const Index = () => {
-  const { data, isLoading, isError, refetch } = useGetTempleDataQuery();
+  const { data, isLoading, isError, refetch, status } = useGetTempleDataQuery();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [visibleItems, setVisibleItems] = useState(4);

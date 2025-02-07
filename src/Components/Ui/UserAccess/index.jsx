@@ -37,6 +37,7 @@ const Index = () => {
     data: roles,
     isFetching,
     error: fetchError,
+    isLoading,
     refetch,
   } = useGetRolePermissionQuery(token);
 
@@ -198,6 +199,7 @@ const Index = () => {
       handlePageChange={handlePageChange}
       currentPage={currentPage}
       handleDeleteData={handleDeleteData}
+      isLoading={isLoading}
     />
   );
 };

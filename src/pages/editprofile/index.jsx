@@ -1,5 +1,5 @@
 import EditProfile from "@/Components/Ui/Profile/EditProfile/index";
-import Layout from "@/Layout";
+import Layout from "../../Layout/index";
 import React from "react";
 
 const index = () => {

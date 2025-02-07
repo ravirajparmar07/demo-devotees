@@ -50,7 +50,7 @@ const DashBoard = ({
 
   return (
     <>
-      <p className="text-lg">Temple</p>
+      <p className="text-lg brij">Temple</p>
       <div className="bg-white p-5 flex max-sm:flex-col max-sm:gap-2.5 max-lg:flex-row justify-between items-center mt-3 rounded mb-6 max-lg:block">
         <div className="flex max-sm:w-full items-center gap-3 max-lg:w-full max-lg:block">
           <input
@@ -91,7 +91,7 @@ const DashBoard = ({
               <span>
                 <Plus />
               </span>
-              <span className="text-white">Add Temple</span>
+              <span className="text-white max-xs:text-sm">Add Temple</span>
             </div>
           </Button>
         </div>

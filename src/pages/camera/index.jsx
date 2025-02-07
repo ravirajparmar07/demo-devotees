@@ -1,5 +1,5 @@
 import Camera from "@/Components/Ui/Camera/index";
-import Layout from "@/Layout";
+import Layout from "../../Layout/index";
 import React from "react";
 
 const index = () => {

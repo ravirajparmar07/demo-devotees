@@ -1,5 +1,5 @@
 import CameScreen from "@/Components/Ui/CameScreen/index";
-import Layout from "@/Layout";
+import Layout from "../../Layout/index";
 import React from "react";
 
 function index() {

@@ -1,5 +1,5 @@
 import RealTimeCounting from "@/Components/Ui/RealTimeCounting/index";
-import Layout from "@/Layout";
+import Layout from "../../Layout/index";
 import React from "react";
 
 const index = () => {

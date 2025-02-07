@@ -1,19 +1,9 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { baseQuery } from "./baseQuery";
 
 export const dashboard = createApi({
   reducerPath: "dashboard",
-  baseQuery: fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
-    prepareHeaders: (headers) => {
-      const token =
-        localStorage.getItem("authToken") ||
-        sessionStorage.getItem("authToken");
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
-      }
-      return headers;
-    },
-  }),
+  baseQuery,
   endpoints: (builder) => ({
     getTempleData: builder.query({
       query: () => ({
@@ -28,13 +18,10 @@ export const dashboard = createApi({
     }),
 
     addTemple: builder.mutation({
-      query: ({ token, newTemple }) => ({
+      query: ({ newTemple }) => ({
         url: "api/temple/temples/",
         method: "POST",
         body: newTemple,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       }),
     }),
 

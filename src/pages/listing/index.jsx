@@ -1,5 +1,5 @@
 import CameraView from "@/Components/Ui/Listing/index";
-import Layout from "@/Layout";
+import Layout from "../../Layout/index";
 import React from "react";
 
 const index = () => {

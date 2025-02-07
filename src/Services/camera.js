@@ -1,53 +1,40 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseQuery } from "./baseQuery";
 
 export const camera = createApi({
   reducerPath: "camera",
-  baseQuery: fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
-  }),
+  baseQuery,
   endpoints: (builder) => ({
     cameraData: builder.query({
-      query: (token) => {
+      query: () => {
         return {
           url: "api/camera/cameras/",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         };
       },
     }),
     addcamera: builder.mutation({
-      query: ({ token, cameraData }) => {
+      query: ({ cameraData }) => {
         return {
           url: "api/camera/cameras/",
           method: "POST",
           body: cameraData,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         };
       },
     }),
     deletecamera: builder.mutation({
-      query: ({ token, cameraId }) => {
+      query: ({ deleteId }) => {
         return {
-          url: `/camera/cameras/{id}/${cameraId}/`,
+          url: `api/camera/cameras/${deleteId}/delete/`,
           method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         };
       },
     }),
     updateCamera: builder.mutation({
-      query: ({ token, cameraId, updatedData }) => {
+      query: ({ cameraId, updatedData }) => {
         return {
-          url: `api/camera/cameras/${cameraId}`,
-          method: "PUT",
+          url: `api/camera/cameras/${cameraId}/delete/`,
+          method: "PATCH",
           body: updatedData,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         };
       },
     }),
