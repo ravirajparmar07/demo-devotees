@@ -54,6 +54,8 @@ export const baseQuery = async (args, api, extraOptions) => {
       sessionStorage.removeItem("authToken");
       localStorage.removeItem("refreshToken");
       sessionStorage.removeItem("refreshToken");
+
+      window.location.href = "/";
     }
   }
 

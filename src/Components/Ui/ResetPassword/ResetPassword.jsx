@@ -23,7 +23,12 @@ const ResetPassword = ({
       <Loader isLoading={isLoading} text="Resetting Password..." />
       <div className="bg-white shadow-lg rounded-lg py-10 px-55 w-full max-w-497 max-sm:mx-5 max-xs:px-10">
         <div className="text-center mb-6">
-          <Image src={logo} alt="Logo" className="mx-auto w-24 h-16 mb-4" />
+          <Image
+            src={logo}
+            priority
+            alt="Logo"
+            className="mx-auto w-24 h-16 mb-4"
+          />
           <h2 className="text-xl font-semibold text-gray-900 mb-2">
             Reset Password
           </h2>

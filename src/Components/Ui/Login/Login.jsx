@@ -37,7 +37,12 @@ export default function Login({ isLoading, handleSubmit }) {
       >
         <div className="bg-white shadow-lg rounded-lg py-10 px-55 w-full max-w-497 max-sm:mx-5 max-xs:px-10">
           <div className="text-center">
-            <Image src={logo} alt="Logo" className="mx-auto w-92 h-66 mb-1" />
+            <Image
+              src={logo}
+              priority
+              alt="Logo"
+              className="mx-auto w-92 h-66 mb-1"
+            />
             <h2 className="text-22 font-semibold text-gray-900 mb-1">
               Welcome Back!
             </h2>

@@ -15,8 +15,16 @@ const Index = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [visibleItems, setVisibleItems] = useState(4);
   const [isDataLoading, setIsDataLoading] = useState(true);
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const token = useAuthToken();
+
+  const filters = [
+    { label: "Name" },
+    { label: "Total Crowd" },
+    { label: "Total In" },
+    { label: "Total Out" },
+  ];
 
   const [addTemple, { isLoading: isAdding, isError: isAddError, isSuccess }] =
     useAddTempleMutation(token);
@@ -76,6 +84,28 @@ const Index = () => {
     }
   };
 
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = (event) => {
+    setAnchorEl(null);
+
+    if (event.target.textContent === "Logout") {
+      localStorage.removeItem("authToken");
+      sessionStorage.removeItem("authToken");
+      router.push("/");
+    }
+  };
+
+  const handleFilterClick = (items) => {
+    console.log("handleFilterClick", items.label);
+  };
+
+  const handleOrderClick = () => {
+    console.log("handleOrderClick");
+  };
+
   return (
     <DashBoard
       data={data}
@@ -95,6 +125,12 @@ const Index = () => {
       setVisibleItems={setVisibleItems}
       isDataLoading={isDataLoading}
       setIsDataLoading={setIsDataLoading}
+      handleClick={handleClick}
+      handleClose={handleClose}
+      anchorEl={anchorEl}
+      filters={filters}
+      handleFilterClick={handleFilterClick}
+      handleOrderClick={handleOrderClick}
     />
   );
 };

@@ -20,11 +20,10 @@ const Header = ({
 }) => {
   const theme1 = useTheme();
 
-  console.log(isSidebarOpen, "sidebar");
   return (
     <div
       className={`flex justify-between px-5 shadow-md max-sm:px-0 fixed top-0 bg-white z-50 w-full left-0 right-0  ${
-        !isSidebarOpen ? "pl-[100px]" : "pl-[275px]"
+        !isSidebarOpen ? "pl-[100px]" : "pl-[275px] max-md:pl-0"
       }`}
     >
       <div className="flex justify-between items-center">
@@ -56,8 +55,6 @@ const Header = ({
           onClick={handleClick}
           className="p-0"
           sx={{ padding: "0px" }}
-          disableRipple
-          disableFocusRipple
         >
           <div className="bg-gray-100 flex h-full items-center gap-1 px-3.5 py-4 cursor-pointer">
             {data?.profile_picture_url ? (

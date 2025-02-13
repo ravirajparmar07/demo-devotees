@@ -10,6 +10,8 @@ import EditPencil from "@/assets/svg/EditPencil";
 import Trash from "@/assets/svg/Trash";
 import Filter from "@/assets/svg/Filter";
 import Pagination from "@/Components/Common/Pagination/Pagination";
+import { Menu, MenuItem } from "@mui/material";
+import ImportExportIcon from "@mui/icons-material/ImportExport";
 
 const Camera = ({
   handleSubmitForm,
@@ -37,6 +39,12 @@ const Camera = ({
   currentData,
   handlePageChange,
   currentPage,
+  anchorEl,
+  handleClick,
+  handleClose,
+  filters,
+  handleFilterClick,
+  handleOrderClick,
 }) => {
   return (
     <>
@@ -49,17 +57,67 @@ const Camera = ({
             placeholder="Search gate and camera"
             className="w-full md:w-[350px] xl:w-[387px] py-2.5 pl-3 border border-gray-200 rounded"
           />
-          <Button
-            className="bg-option py-2.5 px-4 rounded hover:bg-option w-fit max-sm:w-fit max-sm:hidden"
-            // onClick={handleAddCamera}
+          <div
+            id="basic-button"
+            aria-controls={anchorEl ? "basic-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={anchorEl ? "true" : undefined}
+            onClick={handleClick}
+            className="p-0"
           >
-            <div className="flex gap-2 items-center justify-center">
-              <span>
-                <Filter />
-              </span>
-              <span className="text-white">Filter</span>
-            </div>
-          </Button>
+            <Button
+              className="bg-option py-2.5 px-4 rounded hover:bg-option w-fit max-sm:w-fit max-sm:hidden"
+              // onClick={handleAddCamera}
+            >
+              <div className="flex gap-2 items-center justify-center">
+                <span>
+                  <Filter />
+                </span>
+                <span className="text-white">Filter</span>
+              </div>
+            </Button>
+          </div>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+            disablePortal
+            disableEnforceFocus
+            BackdropProps={{
+              invisible: true,
+            }}
+            sx={{
+              mt: 1,
+              "& .MuiPaper-root": {
+                minWidth: "unset",
+                width: "auto",
+                maxWidth: "auto",
+              },
+            }}
+          >
+            {filters.map((items) => (
+              <MenuItem className="px-9" key={items.label}>
+                <div
+                  className="flex gap-4 items-center justify-between w-full"
+                  onClick={() => handleFilterClick(items)}
+                >
+                  <p>{items.label}</p>
+                  <div
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleOrderClick();
+                    }}
+                  >
+                    <ImportExportIcon />
+                  </div>
+                </div>
+              </MenuItem>
+            ))}
+          </Menu>
         </div>
 
         <div className="flex max-sm:w-full gap-4">

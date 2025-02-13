@@ -17,7 +17,7 @@ const Register = ({ handleSubmit, isLoading }) => {
     >
       <div className="bg-white shadow-lg rounded-lg py-10 px-55 max-w-497 w-full max-sm:px-30 max-sm:py-7 max-sm:mx-5 max-md:py-7">
         <div className="text-center">
-          <Image src={logo} alt="Logo" className="w-92 h-66 mx-auto" />
+          <Image src={logo} priority alt="Logo" className="w-92 h-66 mx-auto" />
           <h2 className="text-xl font-semibold text-gray-900 text-22 mt-5 max-md:mt-3.5 max-2xl:mt-2">
             Create New Account
           </h2>

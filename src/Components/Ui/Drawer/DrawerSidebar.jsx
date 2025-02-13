@@ -41,7 +41,7 @@ const DrawerSidebar = () => {
       onKeyDown={toggleDrawer(false)}
     >
       <div className="bg-gray-900 px-5 py-3.5 overflow-y-auto max-lg:h-full">
-        <Image src={logo} alt="logo" className="block mx-auto" />
+        <Image src={logo} priority alt="logo" className="block mx-auto" />
 
         <div className="mt-30">
           <p className="text-white text-xs">MENU</p>

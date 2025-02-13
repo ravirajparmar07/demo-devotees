@@ -26,6 +26,7 @@ const index = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [deleteId, setDeleteId] = useState(0);
+  const [anchorEl, setAnchorEl] = React.useState(null);
   // console.log("deleteId  =", deleteId);
 
   const token = useAuthToken();
@@ -81,6 +82,13 @@ const index = () => {
     { label: "GATE NUMBER/NAME", field: "gate" },
     { label: "CAMERA STATUS", field: "status" },
     { label: "Action", field: "action" },
+  ];
+
+  const filters = [
+    { label: "SR. No" },
+    { label: "Ip Address" },
+    { label: "Camera Id" },
+    { label: "Gate No/Name" },
   ];
 
   const handleAddCamera = () => {
@@ -168,7 +176,27 @@ const index = () => {
       showToast("error", "Failed to update camera.");
     }
   };
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
+  const handleClose = (event) => {
+    setAnchorEl(null);
+
+    if (event.target.textContent === "Logout") {
+      localStorage.removeItem("authToken");
+      sessionStorage.removeItem("authToken");
+      router.push("/");
+    }
+  };
+
+  const handleFilterClick = (items) => {
+    console.log("handleFilterClick", items.label);
+  };
+
+  const handleOrderClick = () => {
+    console.log("handleOrderClick");
+  };
   return (
     <Camera
       handleSubmitForm={handleSubmitForm}
@@ -196,6 +224,12 @@ const index = () => {
       currentData={currentData}
       handlePageChange={handlePageChange}
       currentPage={currentPage}
+      handleClick={handleClick}
+      handleClose={handleClose}
+      anchorEl={anchorEl}
+      filters={filters}
+      handleFilterClick={handleFilterClick}
+      handleOrderClick={handleOrderClick}
     />
   );
 };

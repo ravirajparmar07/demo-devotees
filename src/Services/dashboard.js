@@ -27,7 +27,7 @@ export const dashboard = createApi({
 
     updateTemple: builder.mutation({
       query: ({ id, updatedData }) => ({
-        url: `api/temple/temple-detail/${id}/`,
+        url: `api/temple/temples/${id}/`,
         method: "PATCH",
         body: updatedData,
       }),

@@ -69,7 +69,9 @@ const Index = () => {
       id: item.id,
       rl: item.role?.name || "",
       pi: item.permission?.name || "",
-      cb: item.created_by ? String(item.created_by).toLowerCase() : "",
+      cb: item.created_by_name
+        ? String(item.created_by_name).toLowerCase()
+        : "",
     }))
     .filter(
       (item) =>

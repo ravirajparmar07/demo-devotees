@@ -23,6 +23,7 @@ const ForgotPassword = ({ validationSchema, handleSubmit, isLoading }) => {
               src={logo}
               alt="Company Logo"
               className="mx-auto w-24 h-16 mb-5"
+              priority
             />
             <h2 className="text-lg font-semibold text-gray-900 mb-1">
               Forgot Password?

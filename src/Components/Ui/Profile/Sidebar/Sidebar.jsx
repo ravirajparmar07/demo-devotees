@@ -42,7 +42,7 @@ const Sidebar = ({ open }) => {
         open ? "px-5 " : "px-3.5"
       }`}
     >
-      <Image src={logo} alt="logo" className="block mx-auto" />
+      <Image src={logo} priority alt="logo" className="block mx-auto" />
       <div className="mt-30 h-calc-full-minus-70 overflow-y-auto hide-scrollbar">
         <p className={`text-white text-xs ${open ? "block" : "hidden"}`}>
           MENU
