@@ -35,8 +35,6 @@ const UserAccess = ({
   data,
   setSearchTerm,
 }) => {
-  console.log("data = ", data);
-
   return (
     <div>
       <p className="text-lg font-semibold">User Access & Permissions</p>
@@ -129,7 +127,6 @@ const UserAccess = ({
                               values.permissions[permission.name] || false
                             }
                             onChange={(e) => {
-                              console.log("Checked ID:", permission.id);
                               handlePermissionChange(e, values, setFieldValue);
                             }}
                             className="mr-2"

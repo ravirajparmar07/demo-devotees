@@ -24,7 +24,6 @@ const Index = () => {
     );
 
   const handleFilterClick = (filter) => {
-    console.log("Filter clicked:", filter);
     setFilterData(filter);
     refetch();
   };
@@ -44,11 +43,13 @@ const Index = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const currentData = data.slice(startIndex, endIndex).map((item, index) => ({
-    ...item,
-    srNo: startIndex + index + 1,
-    devoteeCount: item.entry_count - item.exit_count,
-  }));
+  const currentData = Array.isArray(data)
+    ? data.slice(startIndex, endIndex).map((item, index) => ({
+        ...item,
+        srNo: startIndex + index + 1,
+        devoteeCount: item.entry_count - item.exit_count,
+      }))
+    : [];
 
   const columns = [
     { field: "srNo", label: "Sr. No" },
@@ -76,9 +77,8 @@ const Index = () => {
     router.push({
       pathname: "/camescreen",
       query: {
-        cameraId: camera.cameraId,
-        gateName: camera.gateName,
-        videoUrl: "https://www.youtube.com/embed/v_YJdREi9tU?autoplay=1&mute=1",
+        cameraId: camera.camera_id,
+        gateName: camera.gate,
       },
     });
   };

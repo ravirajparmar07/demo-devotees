@@ -122,8 +122,6 @@ const index = () => {
   };
 
   const handleDeleteClick = (row) => {
-    console.log("row = ", row.id);
-
     setDeleteId(row.id);
     setIsOpenView(false);
     setPopupData(row);
@@ -155,8 +153,6 @@ const index = () => {
   };
 
   const handleDeleteData = async () => {
-    console.log("Attempting to delete camera with ID:", deleteId);
-
     try {
       setIsProcessing(true);
       await deletecamera({ token, deleteId }).unwrap();
@@ -172,8 +168,6 @@ const index = () => {
   };
 
   const handleUpdate = async (updatedData) => {
-    console.log("updatedData = ", updatedData);
-
     try {
       setIsProcessing(true);
       const response = await updateCamera({
@@ -206,7 +200,6 @@ const index = () => {
   };
 
   const handleFilterClick = (items) => {
-    console.log("handleFilterClick", items.label);
     setFilterData(items.value);
   };
 

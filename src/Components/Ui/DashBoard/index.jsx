@@ -106,7 +106,6 @@ const Index = () => {
   };
 
   const handleFilterClick = (items) => {
-    console.log("handleFilterClick = ", items.value);
     setFilterData(items.value);
   };
 

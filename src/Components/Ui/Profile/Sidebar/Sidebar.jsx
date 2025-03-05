@@ -34,7 +34,6 @@ const Sidebar = ({ open }) => {
   const handleNavigation = (route) => {
     router.push(route);
   };
-  console.log(open, "open");
 
   return (
     <div

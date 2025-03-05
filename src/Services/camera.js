@@ -6,7 +6,11 @@ export const camera = createApi({
   baseQuery,
   endpoints: (builder) => ({
     cameraData: builder.query({
-      query: ({ filterData = "", searchTerm = "" } = {}) => {
+      query: ({
+        filterData = "",
+        searchTerm = "",
+        temple_id = undefined,
+      } = {}) => {
         let queryParams = [];
 
         if (filterData) {
@@ -14,6 +18,10 @@ export const camera = createApi({
         }
         if (searchTerm) {
           queryParams.push(`search=${searchTerm}`);
+        }
+
+        if (temple_id) {
+          queryParams.push(`temple_id=${temple_id}`);
         }
 
         return {

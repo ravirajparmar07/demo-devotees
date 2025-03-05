@@ -25,7 +25,6 @@ const TempleCard = ({
   address,
   refetch,
 }) => {
-  console.log("address", address);
   const router = useRouter();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -52,7 +51,6 @@ const TempleCard = ({
 
       await updateTemple({ id, updatedData: formData }).unwrap();
 
-      console.log("Temple updated successfully!");
       setIsEditPopupOpen(false);
 
       showToast("success", "Temple update successfully...");
@@ -92,7 +90,6 @@ const TempleCard = ({
   };
 
   const handleOpenEditPopup = (templeId) => {
-    console.log("Temple ID:", templeId);
     setIsEditPopupOpen(true);
     handleCloseMenu();
   };

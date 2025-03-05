@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import moment from "moment";
 import Image from "next/image";
 import crowd from "@/assets/images/crowd.png";
@@ -8,119 +8,21 @@ import Live from "@/assets/svg/Live";
 import CustomBarChart from "./CustomBarChart";
 import LeftArrow from "@/assets/svg/LeftArrow";
 import UpperArrow from "@/assets/svg/UpperArrow";
-import { useRouter } from "next/router";
-import {
-  useGetCrowdStateQuery,
-  useGetTempleDataQuery,
-} from "@/Services/dashboard";
-import Pagination from "@/Components/Common/Pagination/Pagination";
-import Loader from "@/Components/Common/Loader/Loader";
+import { useParams } from "next/navigation";
+import { useCameraDataQuery } from "@/Services/camera";
 
-const Listing = ({ data }) => {
-  const router1 = useRouter();
-  const router = useRouter();
-  const { id } = router1.query;
+const Listing = ({
+  data,
+  templeName,
+  totalCount,
+  handleBack,
+  filter,
+  setFilter,
+  templeData,
+}) => {
+  const { id } = useParams();
 
-  const [filter, setFilter] = useState(moment().format("YYYY"));
-
-  const { data: templename } = useGetTempleDataQuery();
-  const {
-    data: totalCount,
-    isLoading,
-    refetch,
-  } = useGetCrowdStateQuery({
-    id,
-    query: `filter=${filter}`,
-  });
-  useEffect(() => {
-    refetch();
-  }, [filter]);
-
-  const selectedTemple = templename?.find(
-    (temple) => temple.id === parseInt(id)
-  );
-  const templeName = selectedTemple?.name || "Unknown Temple";
-  if (isLoading) {
-    return <Loader isLoading={true} text="Loading listing data..." />;
-  }
-  const handleBack = (path) => {
-    router.push(path);
-  };
-
-  const CameraView = [
-    {
-      id: 1,
-      name: "cam1",
-      location: "gate 1",
-      url: "https://www.youtube.com/embed/mKCieTImjvU?autoplay=1&mute=1",
-    },
-    {
-      id: 2,
-      name: "cam1",
-      location: "gate 1",
-      url: "https://www.youtube.com/embed/v_YJdREi9tU?autoplay=1&mute=1",
-    },
-    {
-      id: 3,
-      name: "cam1",
-      location: "gate 1",
-      url: "https://www.youtube.com/embed/AOpUvJzebWA?autoplay=1&mute=1",
-    },
-    {
-      id: 4,
-      name: "cam1",
-      location: "gate1",
-      url: "https://www.youtube.com/embed/TZikBxNaaQk?autoplay=1&mute=1",
-    },
-    {
-      id: 5,
-      name: "cam1",
-      location: "gate1",
-      url: "https://www.youtube.com/embed/HhFw2q9921Y?autoplay=1&mute=1",
-    },
-    {
-      id: 6,
-      name: "cam1",
-      location: "gate1",
-      url: "https://www.youtube.com/embed/VN8lnHlHqxM?autoplay=1&mute=1",
-    },
-    {
-      id: 7,
-      name: "cam1",
-      location: "gate1",
-      url: "https://www.youtube.com/embed/r-TPJDQSqv0?autoplay=1&mute=1",
-    },
-    {
-      id: 8,
-      name: "cam1",
-      location: "gate1",
-      url: "https://www.youtube.com/embed/wKg71lcs5Nw?autoplay=1&mute=1",
-    },
-    {
-      id: 9,
-      name: "cam1",
-      location: "gate1",
-      url: "https://www.youtube.com/embed/u73rp5y9Iyk?autoplay=1&mute=1",
-    },
-    {
-      id: 10,
-      name: "cam1",
-      location: "gate1",
-      url: "https://www.youtube.com/embed/TZikBxNaaQk?autoplay=1&mute=1",
-    },
-    {
-      id: 11,
-      name: "cam1",
-      location: "gate1",
-      url: "https://www.youtube.com/embed/4Q9jq-tdOoE?autoplay=1&mute=1",
-    },
-    {
-      id: 12,
-      name: "cam1",
-      location: "gate1",
-      url: "https://www.youtube.com/embed/VN8lnHlHqxM?autoplay=1&mute=1",
-    },
-  ];
+  const { data: temple_data } = useCameraDataQuery({ temple_id: id });
 
   return (
     <div className="flex gap-6 flex-col">
@@ -310,27 +212,33 @@ const Listing = ({ data }) => {
             onPageChange={handlePageChange}
           />
         </div> */}
-        {/* In use */}
+        {/* {/ In use /} */}
+
         <div className="grid grid-cols-12 gap-5 max-sm:gap-3 p-4">
-          {CameraView.map((view, index) => (
+          {templeData?.map((view, index) => (
             <div
               key={index}
               className="grid col-span-3 max-lg:col-span-4 max-sm:col-span-12"
             >
               <div className="relative">
                 <div>
-                  <embed
-                    src={view.url}
-                    width="100%"
-                    height="241"
-                    title={`Camera ${view.id}`}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  />
+                  {/* Live Streaming Embed */}
+                  {view.feed ? (
+                    <img
+                      src={view.feed}
+                      alt={`Camera ${view.id}`}
+                      className="w-full h-[241px] object-cover"
+                    />
+                  ) : (
+                    <div className="h-[241px] bg-gray-200 flex items-center justify-center">
+                      <span className="text-sm text-gray-500">Loading...</span>
+                    </div>
+                  )}
                 </div>
                 <div className="absolute top-3 text-white flex justify-between left-6 right-5">
-                  <p className="text-sm">{view.name}</p>
+                  <p className="text-sm text-black">cam{view.id}</p>
                   <span className="bg-red-700 py-1 px-2 rounded-4 text-xs">
-                    {view.location}
+                    {view.gate}
                   </span>
                 </div>
               </div>
