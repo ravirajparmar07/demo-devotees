@@ -10,7 +10,6 @@ import {
 import { showToast } from "@/Components/Common/Toaster/Toaster";
 import { useGetTempleDataQuery } from "@/Services/dashboard";
 import useAuthToken from "@/Components/Common/CustomHooks/useAuthToken";
-import { useRouter } from "next/router";
 
 export const validationSchema = Yup.object({
   ip_address: Yup.string().required("IP address is required"),
@@ -20,6 +19,17 @@ export const validationSchema = Yup.object({
 });
 
 const index = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterData, setFilterData] = useState([]);
+  const token = useAuthToken();
+
+  const { data, isLoading, isError, refetch, status } = useCameraDataQuery(
+    token
+      ? { token, filterData, searchTerm: searchTerm.toString() }
+      : skipToken,
+    { refetchOnMountOrArgChange: true }
+  );
+
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isOpenView, setIsOpenView] = useState(false);
   const [popupData, setPopupData] = useState(null);
@@ -27,12 +37,12 @@ const index = () => {
   const [isDelete, setIsDelete] = useState(false);
   const [deleteId, setDeleteId] = useState(0);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  // console.log("deleteId  =", deleteId);
 
-  const token = useAuthToken();
-
-  const { data, isLoading, refetch } = useCameraDataQuery(token);
-
+  const filters = [
+    { label: "CameraId", value: "camera_id" },
+    { label: "Gate", value: "gate " },
+    { label: "Status", value: "status " },
+  ];
   const { data: dropdownData } = useGetTempleDataQuery();
 
   const [deletecamera, { isLoading: isDeleting }] = useDeletecameraMutation();
@@ -84,13 +94,6 @@ const index = () => {
     { label: "Action", field: "action" },
   ];
 
-  const filters = [
-    { label: "SR. No" },
-    { label: "Ip Address" },
-    { label: "Camera Id" },
-    { label: "Gate No/Name" },
-  ];
-
   const handleAddCamera = () => {
     setIsPopupOpen(true);
     setIsEditing(false);
@@ -115,6 +118,7 @@ const index = () => {
     setIsEditing(true);
     setIsPopupOpen(true);
   };
+
   const handleDeleteClick = (row) => {
     console.log("row = ", row.id);
 
@@ -192,6 +196,7 @@ const index = () => {
 
   const handleFilterClick = (items) => {
     console.log("handleFilterClick", items.label);
+    setFilterData(items.value);
   };
 
   const handleOrderClick = () => {
@@ -230,6 +235,7 @@ const index = () => {
       filters={filters}
       handleFilterClick={handleFilterClick}
       handleOrderClick={handleOrderClick}
+      setSearchTerm={setSearchTerm}
     />
   );
 };

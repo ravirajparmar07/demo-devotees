@@ -8,10 +8,12 @@ import { useRouter } from "next/router";
 import { Menu, MenuItem } from "@mui/material";
 import ImportExportIcon from "@mui/icons-material/ImportExport";
 
-const RealTimeCounting = () => {
+const RealTimeCounting = ({ data = [], isLoading, isError, filters = [] }) => {
   const itemsPerPage = 7;
   const [currentPage, setCurrentPage] = useState(1);
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  console.log("data", data);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -23,26 +25,17 @@ const RealTimeCounting = () => {
   const currentData = data.slice(startIndex, endIndex).map((item, index) => ({
     ...item,
     srNo: startIndex + index + 1,
+    devoteeCount: item.entry_count - item.exit_count,
   }));
-
-  const filters = [
-    { label: "SR. No" },
-    { label: "Gate No/Name" },
-    { label: "Entry Count" },
-    { label: "Exit Count" },
-    { label: "Camera Id" },
-    { label: "Devotee Count" },
-    { label: "Detection Date" },
-  ];
 
   const columns = [
     { field: "srNo", label: "Sr. No" },
-    { field: "gateName", label: "Gate Number/Name" },
-    { field: "entryCount", label: "Entry Count" },
-    { field: "exitCount", label: "Exit Count" },
-    { field: "cameraId", label: "Camera ID" },
+    { field: "gate", label: "Gate Number/Name" },
+    { field: "entry_count", label: "Entry Count" },
+    { field: "exit_count", label: "Exit Count" },
+    { field: "camera_id", label: "Camera ID" },
     { field: "devoteeCount", label: "Devotee Count" },
-    { field: "detectionDate", label: "Detection Date" },
+    { field: "detected_date", label: "Detection Date" },
     { field: "action", label: "Action" },
   ];
   const router = useRouter();
@@ -137,6 +130,8 @@ const RealTimeCounting = () => {
         <ReusableTable
           columns={columns}
           rows={currentData}
+          isLoading={isLoading}
+          isError={isError}
           onViewClick={handleViewClick}
           buttonConfig={{ view: true, edit: false, delete: false }}
         />

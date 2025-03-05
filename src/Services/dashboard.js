@@ -6,9 +6,20 @@ export const dashboard = createApi({
   baseQuery,
   endpoints: (builder) => ({
     getTempleData: builder.query({
-      query: () => ({
-        url: "api/temple/temples-list/",
-      }),
+      query: ({ filterData = "", searchTerm = "" } = {}) => {
+        let queryParams = [];
+
+        if (filterData) {
+          queryParams.push(`ordering=${filterData}`);
+        }
+        if (searchTerm) {
+          queryParams.push(`search=${searchTerm}`);
+        }
+
+        return {
+          url: `api/temple/temples-list/?${queryParams.join("&")}`,
+        };
+      },
     }),
 
     getCrowdState: builder.query({
@@ -35,7 +46,7 @@ export const dashboard = createApi({
 
     deleteTemple: builder.mutation({
       query: (id) => ({
-        url: `api/temple/temple-detail/${id}/`,
+        url: `api/temple/temples/${id}/`,
         method: "DELETE",
       }),
     }),
@@ -51,6 +62,7 @@ export const dashboard = createApi({
 
 export const {
   useGetTempleDataQuery,
+  useGetFilteredDataQuery,
   useGetCrowdStateQuery,
   useAddTempleMutation,
   useUpdateTempleMutation,

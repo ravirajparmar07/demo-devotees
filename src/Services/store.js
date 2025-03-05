@@ -4,6 +4,7 @@ import { dashboard } from "@/Services/dashboard";
 import { myprofile } from "@/Services/myprofile";
 import { camera } from "@/Services/camera";
 import { RolePermission } from "@/Services/RolePermission";
+import { realCounting } from "@/Services/realCounting";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     [myprofile.reducerPath]: myprofile.reducer,
     [camera.reducerPath]: camera.reducer,
     [RolePermission.reducerPath]: RolePermission.reducer,
+    [realCounting.reducerPath]: realCounting.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat([
@@ -20,6 +22,7 @@ const store = configureStore({
       myprofile.middleware,
       camera.middleware,
       RolePermission.middleware,
+      realCounting.middleware,
     ]),
 });
 

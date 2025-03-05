@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PopupMenu from "@/Components/Common/Popup/Popup";
 import Button from "@/Components/Common/Button/Button";
 import Plus from "@/assets/svg/Plus";
@@ -45,6 +45,7 @@ const Camera = ({
   filters,
   handleFilterClick,
   handleOrderClick,
+  setSearchTerm,
 }) => {
   return (
     <>
@@ -55,6 +56,7 @@ const Camera = ({
           <input
             type="text"
             placeholder="Search gate and camera"
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full md:w-[350px] xl:w-[387px] py-2.5 pl-3 border border-gray-200 rounded"
           />
           <div

@@ -32,6 +32,7 @@ const DashBoard = ({
   handleFilterClick,
   handleOrderClick,
   refetch,
+  setSearchTerm,
 }) => {
   useEffect(() => {
     if (!isLoading) {
@@ -65,6 +66,7 @@ const DashBoard = ({
           <input
             type="text"
             placeholder="Search Temple"
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full md:w-full xl:w-[387px] py-2.5 pl-3 border border-gray-200 rounded"
           />
           <div
@@ -179,6 +181,8 @@ const DashBoard = ({
                 name={post.name}
                 crowdData={post.crowdData}
                 id={post.id}
+                address={post.address}
+                refetch={refetch}
               />
             ))}
       </div>

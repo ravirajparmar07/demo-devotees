@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import UserAccess from "@/Components/Ui/UserAccess/UserAccess";
 import {
+  useAddRoleMutation,
   useDeleteRoleMutation,
+  useGetPermissionDataQuery,
   useGetRolePermissionQuery,
+  useUpdateRoleMutation,
 } from "@/Services/RolePermission";
 import * as Yup from "yup";
 import { showToast } from "@/Components/Common/Toaster/Toaster";
@@ -11,27 +14,13 @@ const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [rows, setRows] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-
-  const [token, setToken] = useState(() => {
-    if (typeof window !== "undefined") {
-      return (
-        localStorage.getItem("authToken") ||
-        sessionStorage.getItem("authToken") ||
-        ""
-      );
-    }
-    return "";
-  });
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setToken(
-        localStorage.getItem("authToken") ||
-          sessionStorage.getItem("authToken") ||
-          ""
-      );
-    }
-  }, []);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isOpenView, setIsOpenView] = useState(false);
+  const [popupData, setPopupData] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+  const [token, setToken] = useState("");
 
   const {
     data: roles,
@@ -41,24 +30,20 @@ const Index = () => {
     refetch,
   } = useGetRolePermissionQuery(token);
 
-  console.log("roles = ", roles);
+  const { data } = useGetPermissionDataQuery(token);
 
   const [deleteRole] = useDeleteRoleMutation();
+  const [updateRole] = useUpdateRoleMutation();
+  const [addRole, { isLoading: isAddingRole }] = useAddRoleMutation();
 
-  useEffect(() => {
-    if (roles) setRows(roles);
-  }, [roles]);
-
-  const handleSearchChange = (e) => setSearchTerm(e.target.value);
-
-  const handleAddRoleClick = () => {
-    setIsPopupOpen(true);
-    setIsEditing(false);
-    setPopupData(null);
-  };
+  const [formValues, setFormValues] = useState({
+    userRole: "",
+    permissions: {},
+    selectAll: false,
+  });
 
   const validationSchema = Yup.object({
-    userRole: Yup.string().required("User role is required"),
+    userRole: Yup.string().required("User  role is required"),
   });
 
   const itemsPerPage = 7;
@@ -67,17 +52,18 @@ const Index = () => {
   const filteredData = (roles || [])
     .map((item) => ({
       id: item.id,
-      rl: item.role?.name || "",
-      pi: item.permission?.name || "",
-      cb: item.created_by_name
+      name: item.name || "",
+      permissions:
+        item.permissions?.map((perm) => perm.permission__name).join(", ") || "",
+      created_by_name: item.created_by_name
         ? String(item.created_by_name).toLowerCase()
         : "",
     }))
     .filter(
       (item) =>
-        item.rl.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.pi.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.cb.toLowerCase().includes(searchTerm.toLowerCase())
+        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.permissions.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.created_by_name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
   const totalData = filteredData.length;
@@ -87,49 +73,59 @@ const Index = () => {
 
   const columns = [
     { label: "Id", field: "id" },
-    { label: "ROLES", field: "rl" },
-    { label: "PERMISSIONS", field: "pi" },
-    { label: "CREATED BY", field: "cb" },
+    { label: "ROLES", field: "name" },
+    { label: "PERMISSIONS", field: "permissions" },
+    { label: "CREATED BY", field: "created_by_name" },
     { label: "ACTION", field: "action" },
   ];
 
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [isOpenView, setIsOpenView] = useState(false);
-  const [popupData, setPopupData] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [isDelete, setIsDelete] = useState(false);
-  const [deleteId, setDeleteId] = useState(0);
+  useEffect(() => {
+    if (roles) setRows(roles);
+  }, [roles]);
 
-  const initialValues = {
-    userRole: popupData?.userRole || "",
-    permissions: popupData?.permissions || {},
-    selectAll: false,
+  const handleSearchChange = (e) => setSearchTerm(e.target.value);
+  const handleAddRoleClick = () => {
+    setIsPopupOpen(true);
+    setIsEditing(false);
+    setPopupData(null);
   };
 
   const handleSelectAll = (e, setFieldValue) => {
     const isChecked = e.target.checked;
-    const allPermissions = [
-      "View Camera",
-      "Add Camera",
-      "Edit Camera",
-      "Delete Camera",
-    ];
-    const updatedPermissions = allPermissions.reduce(
-      (acc, permission) => ({ ...acc, [permission]: isChecked }),
+
+    const updatedPermissions = data.reduce(
+      (acc, permission) => ({ ...acc, [permission.name]: isChecked }),
       {}
     );
+
+    const selectedIds = isChecked
+      ? data.map((permission) => permission.id)
+      : [];
+
     setFieldValue("permissions", updatedPermissions);
     setFieldValue("selectAll", isChecked);
+    setFieldValue("selectedIds", selectedIds);
   };
 
   const handlePermissionChange = (e, values, setFieldValue) => {
     const { name, checked } = e.target;
     const updatedPermissions = { ...values.permissions, [name]: checked };
-    const isAllSelected = Object.values(updatedPermissions).every(
-      (val) => val === true
+
+    const selectedIds = Object.keys(updatedPermissions)
+      .filter((key) => updatedPermissions[key])
+      .map((key) => {
+        const permission = data.find((perm) => perm.name === key);
+        return permission ? permission.id : null;
+      })
+      .filter(Boolean);
+
+    const isAllSelected = data.every(
+      (permission) => updatedPermissions[permission.name]
     );
+
     setFieldValue("permissions", updatedPermissions);
     setFieldValue("selectAll", isAllSelected);
+    setFieldValue("selectedIds", selectedIds);
   };
 
   const handleClosePopup = () => {
@@ -137,15 +133,91 @@ const Index = () => {
     setIsOpenView(false);
     setIsEditing(false);
     setIsDelete(false);
+    setPopupData(null);
   };
 
-  const handleSubmitForm = (values) => {
-    handleClosePopup();
+  const handleSubmitForm = async (values) => {
+    const selectedPermissionIds = Object.keys(values.permissions)
+      .filter((key) => values.permissions[key])
+      .map((key) => {
+        const permission = data.find((perm) => perm.name === key);
+        return permission ? permission.id : null;
+      })
+      .filter(Boolean);
+
+    const formData = {
+      name: values.userRole,
+      permissions: selectedPermissionIds,
+    };
+
+    try {
+      const response = await addRole({ token, formData }).unwrap();
+      showToast("success", "Role added successfully.");
+      await refetch();
+      handleClosePopup();
+    } catch (error) {
+      showToast("error", error.data?.message || "Failed to add role.");
+    }
+    setIsPopupOpen(false);
   };
 
-  const handleViewClick = (row) => {
-    setPopupData(row);
-    setIsOpenView(true);
+  const [selectedIds, setSelectedIds] = useState([]);
+
+  useEffect(() => {
+    if (popupData) {
+      setFormValues({
+        userRole: popupData?.name,
+        permissions: popupData?.permissions || {},
+        selectAll: Object.values(popupData?.permissions || {}).every(
+          (val) => val === true
+        ),
+      });
+    } else {
+      setFormValues({
+        userRole: "",
+        permissions: {},
+        selectAll: false,
+      });
+    }
+  }, [popupData]);
+
+  const handleUpdate = async (updatedData) => {
+    if (!popupData?.id) {
+      showToast("error", "Invalid role ID.");
+      return;
+    }
+
+    const formData = {
+      name: updatedData.userRole,
+      permissions: selectedIds,
+    };
+
+    try {
+      const response = await updateRole({
+        id: popupData.id,
+        updatedData: formData,
+        token,
+      }).unwrap();
+
+      if (response?.role?.id) {
+        showToast("success", "Role updated successfully.");
+
+        setRows((prevRows) =>
+          prevRows.map((row) =>
+            row.id === popupData.id
+              ? { ...row, name: formData.name, permissions: selectedIds }
+              : row
+          )
+        );
+
+        handleClosePopup();
+      } else {
+        showToast("error", "Failed to update role.");
+      }
+    } catch (error) {
+      showToast("error", error.data?.message || "Fail to update role.");
+    }
+    setIsPopupOpen(false);
   };
 
   const handleEditClick = (row) => {
@@ -153,6 +225,11 @@ const Index = () => {
     setIsOpenView(false);
     setIsEditing(true);
     setIsPopupOpen(true);
+  };
+
+  const handleViewClick = (row) => {
+    setPopupData(row);
+    setIsOpenView(true);
   };
 
   const handleDeleteClick = (row) => {
@@ -169,7 +246,6 @@ const Index = () => {
       await refetch();
       handleClosePopup();
     } catch (error) {
-      console.error("Error deleting role:", error);
       showToast("error", "Failed to delete role.");
     }
   };
@@ -180,10 +256,9 @@ const Index = () => {
       handleEditClick={handleEditClick}
       handleViewClick={handleViewClick}
       handleClosePopup={handleClosePopup}
-      handleSubmitForm={handleSubmitForm}
       handlePermissionChange={handlePermissionChange}
       handleSelectAll={handleSelectAll}
-      initialValues={initialValues}
+      initialValues={formValues}
       columns={columns}
       handleAddRoleClick={handleAddRoleClick}
       validationSchema={validationSchema}
@@ -200,8 +275,11 @@ const Index = () => {
       currentData={currentData}
       handlePageChange={handlePageChange}
       currentPage={currentPage}
+      handleUpdate={handleUpdate}
       handleDeleteData={handleDeleteData}
       isLoading={isLoading}
+      handleSubmitForm={handleSubmitForm}
+      data={data}
     />
   );
 };

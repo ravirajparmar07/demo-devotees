@@ -10,6 +10,7 @@ import * as Yup from "yup";
 import PopupMenu from "@/Components/Common/Popup/Popup";
 import InputField from "@/Components/Common/InputField/InputField";
 import { useUpdateTempleMutation } from "@/Services/dashboard";
+import { useDeleteTempleMutation } from "@/Services/dashboard";
 import { showToast } from "../Toaster/Toaster";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Trash from "@/assets/svg/Trash";
@@ -23,15 +24,15 @@ const TempleCard = ({
   address,
   refetch,
 }) => {
+  console.log("address", address);
   const router = useRouter();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
+  const [deleteTemple] = useDeleteTempleMutation();
   const [selectedFile, setSelectedFile] = useState(null);
   const open = Boolean(anchorEl);
-
-  console.log("image = ", image);
 
   const [updateTemple, { isLoading, isError, isSuccess }] =
     useUpdateTempleMutation();
@@ -67,14 +68,27 @@ const TempleCard = ({
     setAnchorEl(null);
   };
 
-  const handleDeleteData = () => {
-    console.log("delete button clicked....");
+  const handleDeleteData = async (id) => {
+    try {
+      await deleteTemple(id).unwrap();
+      showToast("success", "Temple deleted successfully.");
+      setIsDeletePopupOpen(false);
+      if (refetch) refetch();
+    } catch (error) {
+      showToast("error", "Failed to delete temple.");
+    }
   };
 
   const handleClosePopup = () => {
-    console.log("close button clicked...");
+    setIsDeletePopupOpen(false);
   };
-  const handleOpenEditPopup = () => {
+  // const handleOpenEditPopup = () => {
+  //   setIsEditPopupOpen(true);
+  //   handleCloseMenu();
+  // };
+
+  const handleOpenEditPopup = (templeId) => {
+    console.log("Temple ID:", templeId);
     setIsEditPopupOpen(true);
     handleCloseMenu();
   };
@@ -168,7 +182,7 @@ const TempleCard = ({
             }}
           >
             <MenuItem
-              onClick={handleOpenEditPopup}
+              onClick={() => handleOpenEditPopup(id)}
               sx={{ display: "flex", gap: "5px" }}
             >
               <Edit fontSize="small" />
@@ -224,7 +238,10 @@ const TempleCard = ({
                     className="cursor-pointer w-20 h-20 bg-gray-200 rounded border border-dashed flex items-center justify-center"
                   >
                     <img
-                      src={`${process.env.NEXT_PUBLIC_BASE_URL}${image}`}
+                      src={
+                        selectedFile ||
+                        `${process.env.NEXT_PUBLIC_BASE_URL}${image}`
+                      }
                       alt="Selected"
                       width={80}
                       height={80}
@@ -295,7 +312,7 @@ const TempleCard = ({
                 <Button
                   type="submit"
                   className="w-fit text-sm py-2.5 px-5 rounded-4 transition bg-button hover:bg-red-700 text-white max-sm:w-full max-xl:py-1.5"
-                  onClick={handleDeleteData}
+                  onClick={() => handleDeleteData(id)}
                 >
                   <span className="px-2.5">Delete</span>
                 </Button>

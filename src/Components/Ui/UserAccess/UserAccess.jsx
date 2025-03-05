@@ -10,6 +10,8 @@ import Trash from "@/assets/svg/Trash";
 import { Search } from "@mui/icons-material";
 
 const UserAccess = ({
+  roles,
+  handleUpdate,
   handleDeleteClick,
   handleEditClick,
   handleViewClick,
@@ -31,7 +33,10 @@ const UserAccess = ({
   isEditing,
   handleDeleteData,
   isLoading,
+  data,
 }) => {
+  console.log("data = ", data);
+
   return (
     <div>
       <p className="text-lg font-semibold">User Access & Permissions</p>
@@ -77,7 +82,7 @@ const UserAccess = ({
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={handleSubmitForm}
+            onSubmit={isEditing ? handleUpdate : handleSubmitForm}
             enableReinitialize
           >
             {({ values, setFieldValue, handleChange, handleBlur }) => (
@@ -98,7 +103,7 @@ const UserAccess = ({
                   <label className="text-sm font-normal text-gray-900">
                     Permissions
                   </label>
-                  <div className=" rounded-4   text-lightgray ">
+                  <div className="rounded-4 text-lightgray">
                     <div className="flex items-center bg-customGray p-3">
                       <input
                         type="checkbox"
@@ -108,31 +113,29 @@ const UserAccess = ({
                         onChange={(e) => handleSelectAll(e, setFieldValue)}
                         className="mr-2"
                       />
-                      <label htmlFor="selectAll" className="text-sm ">
+                      <label htmlFor="selectAll" className="text-sm">
                         Select all Permissions
                       </label>
                     </div>
 
-                    <div className="p-3 rounded-4 border border-borderGray  ">
-                      {[
-                        "View Camera",
-                        "Add Camera",
-                        "Edit Camera",
-                        "Delete Camera",
-                      ].map((permission, index) => (
+                    <div className="p-3 rounded-4 border border-borderGray">
+                      {data.map((permission, index) => (
                         <div key={index} className="flex items-center mb-2">
                           <input
                             type="checkbox"
-                            id={permission}
-                            name={permission}
-                            checked={values.permissions[permission] || false}
-                            onChange={(e) =>
-                              handlePermissionChange(e, values, setFieldValue)
+                            id={permission.id}
+                            name={permission.name}
+                            checked={
+                              values.permissions[permission.name] || false
                             }
+                            onChange={(e) => {
+                              console.log("Checked ID:", permission.id);
+                              handlePermissionChange(e, values, setFieldValue);
+                            }}
                             className="mr-2"
                           />
-                          <label htmlFor={permission} className="text-sm">
-                            {permission}
+                          <label htmlFor={permission.id} className="text-sm">
+                            {permission.name}
                           </label>
                         </div>
                       ))}
@@ -187,7 +190,7 @@ const UserAccess = ({
               <Button
                 type="submit"
                 className="w-fit text-sm py-2.5 px-5 rounded-4 transition bg-button hover:bg-red-700 text-white max-sm:w-full max-xl:py-1.5"
-                onClick={() => handleDeleteClick(popupData)}
+                onClick={() => handleDeleteData(id)}
               >
                 <span className="px-2.5">Delete</span>
               </Button>

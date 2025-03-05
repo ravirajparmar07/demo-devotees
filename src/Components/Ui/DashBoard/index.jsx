@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   useAddTempleMutation,
+  useGetFilteredDataQuery,
   useGetTempleDataQuery,
 } from "@/Services/dashboard";
 import withAuth from "@/hoc/withAuth";
@@ -10,21 +11,23 @@ import { showToast } from "@/Components/Common/Toaster/Toaster";
 import useAuthToken from "@/Components/Common/CustomHooks/useAuthToken";
 
 const Index = () => {
-  const { data, isLoading, isError, refetch, status } = useGetTempleDataQuery();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterData, setFilterData] = useState([]);
+  const { data, isLoading, isError, refetch, status } = useGetTempleDataQuery(
+    { filterData, searchTerm },
+    { refetchOnMountOrArgChange: true }
+  );
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [visibleItems, setVisibleItems] = useState(4);
   const [isDataLoading, setIsDataLoading] = useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
+  // useGetFilteredDataQuery(filterData);
+
   const token = useAuthToken();
 
-  const filters = [
-    { label: "Name" },
-    { label: "Total Crowd" },
-    { label: "Total In" },
-    { label: "Total Out" },
-  ];
+  const filters = [{ label: "Name (A-Z)", value: "-name" }];
 
   const [addTemple, { isLoading: isAdding, isError: isAddError, isSuccess }] =
     useAddTempleMutation(token);
@@ -79,7 +82,6 @@ const Index = () => {
       setIsPopupOpen(false);
       await refetch();
     } catch (error) {
-      console.error("Add Temple failed:", error);
       showToast("error", "Add Temple failed. Please try again.");
     }
   };
@@ -99,7 +101,8 @@ const Index = () => {
   };
 
   const handleFilterClick = (items) => {
-    console.log("handleFilterClick", items.label);
+    console.log("handleFilterClick = ", items.value);
+    setFilterData(items.value);
   };
 
   const handleOrderClick = () => {
@@ -131,6 +134,7 @@ const Index = () => {
       filters={filters}
       handleFilterClick={handleFilterClick}
       handleOrderClick={handleOrderClick}
+      setSearchTerm={setSearchTerm}
     />
   );
 };
