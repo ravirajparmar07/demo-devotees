@@ -8,6 +8,7 @@ const nextConfig = {
     buildActivity: false,
   },
   productionBrowserSourceMaps: false, // Removes source maps in production
+  unoptimized: false,
 };
 
 export default nextConfig;
