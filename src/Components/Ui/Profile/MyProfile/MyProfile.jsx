@@ -8,11 +8,9 @@ const MyProfile = ({ handleEditClick, data, isLoading }) => {
   if (isLoading) {
     return <Loader isLoading={true} text="Loading profile data..." />;
   }
-
   if (!data) {
     return;
   }
-
   return (
     <>
       <p className="text-lg">User Profile</p>

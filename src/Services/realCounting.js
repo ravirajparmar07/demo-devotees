@@ -6,9 +6,20 @@ export const realCounting = createApi({
   baseQuery,
   endpoints: (builder) => ({
     realTimeCounting: builder.query({
-      query: () => ({
-        url: "api/camera/realtime-counting/",
-      }),
+      query: ({ filterData = "", searchTerm = "" } = {}) => {
+        let queryParams = [];
+
+        if (filterData) {
+          queryParams.push(`ordering=${filterData}`);
+        }
+        if (searchTerm) {
+          queryParams.push(`search=${searchTerm}`);
+        }
+
+        return {
+          url: `api/camera/realtime-counting/?${queryParams.join("&")}`,
+        };
+      },
     }),
   }),
 });

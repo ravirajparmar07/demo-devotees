@@ -10,6 +10,7 @@ import {
 import { showToast } from "@/Components/Common/Toaster/Toaster";
 import { useGetTempleDataQuery } from "@/Services/dashboard";
 import useAuthToken from "@/Components/Common/CustomHooks/useAuthToken";
+import Loader from "@/Components/Common/Loader/Loader";
 
 export const validationSchema = Yup.object({
   ip_address: Yup.string().required("IP address is required"),
@@ -21,6 +22,7 @@ export const validationSchema = Yup.object({
 const index = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterData, setFilterData] = useState([]);
+  const [isProcessing, setIsProcessing] = useState(false);
   const token = useAuthToken();
 
   const { data, isLoading, isError, refetch, status } = useCameraDataQuery(
@@ -131,6 +133,7 @@ const index = () => {
 
   const handleSubmitForm = async (values, { resetForm }) => {
     try {
+      setIsProcessing(true);
       const payload = {
         token: token,
         cameraData: values,
@@ -144,6 +147,8 @@ const index = () => {
     } catch (error) {
       console.error("Add Camera failed:", error);
       showToast("error", "Add Camera failed. Please try again.");
+    } finally {
+      setIsProcessing(false);
     }
 
     resetForm();
@@ -153,6 +158,7 @@ const index = () => {
     console.log("Attempting to delete camera with ID:", deleteId);
 
     try {
+      setIsProcessing(true);
       await deletecamera({ token, deleteId }).unwrap();
       showToast("success", "Camera deleted successfully.");
       await refetch();
@@ -160,6 +166,8 @@ const index = () => {
     } catch (error) {
       console.error("Error deleting camera:", error);
       showToast("error", "Failed to delete camera.");
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -167,6 +175,7 @@ const index = () => {
     console.log("updatedData = ", updatedData);
 
     try {
+      setIsProcessing(true);
       const response = await updateCamera({
         cameraId: popupData?.id,
         updatedData: updatedData,
@@ -178,6 +187,8 @@ const index = () => {
     } catch (error) {
       console.error("Error updating camera:", error);
       showToast("error", "Failed to update camera.");
+    } finally {
+      setIsProcessing(false);
     }
   };
   const handleClick = (event) => {
@@ -203,40 +214,45 @@ const index = () => {
     console.log("handleOrderClick");
   };
   return (
-    <Camera
-      handleSubmitForm={handleSubmitForm}
-      handleAddCamera={handleAddCamera}
-      handleClosePopup={handleClosePopup}
-      handleViewClick={handleViewClick}
-      handleEditClick={handleEditClick}
-      handleDeleteClick={handleDeleteClick}
-      columns={columns}
-      initialValues={initialValues}
-      isPopupOpen={isPopupOpen}
-      isOpenView={isOpenView}
-      popupData={popupData}
-      isEditing={isEditing}
-      isDelete={isDelete}
-      data={data}
-      token={token}
-      handleDeleteData={handleDeleteData}
-      handleUpdate={handleUpdate}
-      filteredData={filteredData}
-      isLoading={isLoading}
-      dropdownData={dropdownData}
-      totalData={totalData}
-      itemsPerPage={itemsPerPage}
-      currentData={currentData}
-      handlePageChange={handlePageChange}
-      currentPage={currentPage}
-      handleClick={handleClick}
-      handleClose={handleClose}
-      anchorEl={anchorEl}
-      filters={filters}
-      handleFilterClick={handleFilterClick}
-      handleOrderClick={handleOrderClick}
-      setSearchTerm={setSearchTerm}
-    />
+    <>
+      {isProcessing || isDeleting ? (
+        <Loader isLoading text="Processing..." />
+      ) : null}
+      <Camera
+        handleSubmitForm={handleSubmitForm}
+        handleAddCamera={handleAddCamera}
+        handleClosePopup={handleClosePopup}
+        handleViewClick={handleViewClick}
+        handleEditClick={handleEditClick}
+        handleDeleteClick={handleDeleteClick}
+        columns={columns}
+        initialValues={initialValues}
+        isPopupOpen={isPopupOpen}
+        isOpenView={isOpenView}
+        popupData={popupData}
+        isEditing={isEditing}
+        isDelete={isDelete}
+        data={data}
+        token={token}
+        handleDeleteData={handleDeleteData}
+        handleUpdate={handleUpdate}
+        filteredData={filteredData}
+        isLoading={isLoading}
+        dropdownData={dropdownData}
+        totalData={totalData}
+        itemsPerPage={itemsPerPage}
+        currentData={currentData}
+        handlePageChange={handlePageChange}
+        currentPage={currentPage}
+        handleClick={handleClick}
+        handleClose={handleClose}
+        anchorEl={anchorEl}
+        filters={filters}
+        handleFilterClick={handleFilterClick}
+        handleOrderClick={handleOrderClick}
+        setSearchTerm={setSearchTerm}
+      />
+    </>
   );
 };
 

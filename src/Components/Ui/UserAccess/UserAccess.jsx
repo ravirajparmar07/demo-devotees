@@ -23,7 +23,6 @@ const UserAccess = ({
   columns,
   handleAddRoleClick,
   validationSchema,
-  handleSearchChange,
   searchTerm,
   filteredData,
   isPopupOpen,
@@ -34,6 +33,7 @@ const UserAccess = ({
   handleDeleteData,
   isLoading,
   data,
+  setSearchTerm,
 }) => {
   console.log("data = ", data);
 
@@ -47,7 +47,7 @@ const UserAccess = ({
             placeholder="Search roles..."
             className="w-full sm:w-[300px] lg:w-[387px] py-2.5 pl-10 pr-3 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
             value={searchTerm}
-            onChange={handleSearchChange}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
         </div>

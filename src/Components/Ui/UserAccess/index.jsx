@@ -12,6 +12,9 @@ import { showToast } from "@/Components/Common/Toaster/Toaster";
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const { isError, status } = useGetRolePermissionQuery({
+    refetchOnMountOrArgChange: true,
+  });
   const [rows, setRows] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -262,8 +265,6 @@ const Index = () => {
       columns={columns}
       handleAddRoleClick={handleAddRoleClick}
       validationSchema={validationSchema}
-      handleSearchChange={handleSearchChange}
-      searchTerm={searchTerm}
       filteredData={filteredData}
       isPopupOpen={isPopupOpen}
       isOpenView={isOpenView}
@@ -280,6 +281,7 @@ const Index = () => {
       isLoading={isLoading}
       handleSubmitForm={handleSubmitForm}
       data={data}
+      setSearchTerm={setSearchTerm}
     />
   );
 };

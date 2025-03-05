@@ -7,11 +7,8 @@ export const RolePermission = createApi({
   tagTypes: ["Items"],
   endpoints: (builder) => ({
     getRolePermission: builder.query({
-      query: (token) => ({
-        url: "api/role/useraccesspermissions",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      query: (searchTerm) => ({
+        url: `api/role/useraccesspermissions?${searchTerm}`,
       }),
       providesTags: ["Items"],
     }),

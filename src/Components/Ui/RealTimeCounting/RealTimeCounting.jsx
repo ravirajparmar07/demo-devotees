@@ -1,60 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Button from "@/Components/Common/Button/Button";
-import Filter from "@/assets/svg/Filter";
+import FilterIcon from "@/assets/svg/Filter";
 import ReusableTable from "../../Common/ReusableTable/ReusableTable";
-import { data } from "@/utils/data";
 import Pagination from "@/Components/Common/Pagination/Pagination";
-import { useRouter } from "next/router";
 import { Menu, MenuItem } from "@mui/material";
 import ImportExportIcon from "@mui/icons-material/ImportExport";
 
-const RealTimeCounting = ({ data = [], isLoading, isError, filters = [] }) => {
-  const itemsPerPage = 7;
-  const [currentPage, setCurrentPage] = useState(1);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  console.log("data", data);
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-
-  const currentData = data.slice(startIndex, endIndex).map((item, index) => ({
-    ...item,
-    srNo: startIndex + index + 1,
-    devoteeCount: item.entry_count - item.exit_count,
-  }));
-
-  const columns = [
-    { field: "srNo", label: "Sr. No" },
-    { field: "gate", label: "Gate Number/Name" },
-    { field: "entry_count", label: "Entry Count" },
-    { field: "exit_count", label: "Exit Count" },
-    { field: "camera_id", label: "Camera ID" },
-    { field: "devoteeCount", label: "Devotee Count" },
-    { field: "detected_date", label: "Detection Date" },
-    { field: "action", label: "Action" },
-  ];
-  const router = useRouter();
-  const handleViewClick = () => {
-    router.push("/camescreen");
-  };
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = (event) => {
-    setAnchorEl(null);
-
-    if (event.target.textContent === "Logout") {
-      localStorage.removeItem("authToken");
-      sessionStorage.removeItem("authToken");
-      router.push("/");
-    }
-  };
+const RealTimeCounting = ({
+  currentData,
+  columns,
+  filters,
+  currentPage,
+  itemsPerPage,
+  totalData,
+  handlePageChange,
+  handleViewClick,
+  handleClick,
+  handleClose,
+  anchorEl,
+  setSearchTerm,
+  handleFilterClick,
+  handleOrderClick,
+  isLoading,
+  isError,
+}) => {
   return (
     <>
       <div>
@@ -64,6 +33,7 @@ const RealTimeCounting = ({ data = [], isLoading, isError, filters = [] }) => {
             <input
               type="text"
               placeholder="Search gate number or name"
+              onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full sm:w-[300px] lg:w-[387px] py-2.5 pl-3 border border-gray-200 rounded"
             />
             <div
@@ -77,7 +47,7 @@ const RealTimeCounting = ({ data = [], isLoading, isError, filters = [] }) => {
               <Button className="bg-option py-2.5 px-4 rounded hover:bg-[#ab2f2e] w-full sm:w-auto">
                 <div className="flex gap-2 items-center justify-center">
                   <span>
-                    <Filter />
+                    <FilterIcon />
                   </span>
                   <span className="text-white">Filter</span>
                 </div>
@@ -137,7 +107,7 @@ const RealTimeCounting = ({ data = [], isLoading, isError, filters = [] }) => {
         />
       </div>
       <Pagination
-        totalData={data.length}
+        totalData={totalData}
         itemsPerPage={itemsPerPage}
         currentPage={currentPage}
         onPageChange={handlePageChange}

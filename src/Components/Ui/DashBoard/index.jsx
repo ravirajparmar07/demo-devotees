@@ -9,6 +9,7 @@ import * as Yup from "yup";
 import DashBoard from "../../Ui/DashBoard/DashBoard";
 import { showToast } from "@/Components/Common/Toaster/Toaster";
 import useAuthToken from "@/Components/Common/CustomHooks/useAuthToken";
+import Loader from "@/Components/Common/Loader/Loader";
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -22,6 +23,7 @@ const Index = () => {
   const [visibleItems, setVisibleItems] = useState(4);
   const [isDataLoading, setIsDataLoading] = useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   // useGetFilteredDataQuery(filterData);
 
@@ -62,6 +64,7 @@ const Index = () => {
 
   const handleSubmitForm = async (values, { resetForm }) => {
     try {
+      setIsProcessing(true);
       const formData = new FormData();
       formData.append("name", values.name);
       formData.append("address", values.address);
@@ -83,6 +86,8 @@ const Index = () => {
       await refetch();
     } catch (error) {
       showToast("error", "Add Temple failed. Please try again.");
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -110,32 +115,35 @@ const Index = () => {
   };
 
   return (
-    <DashBoard
-      data={data}
-      isLoading={isLoading}
-      isError={isError}
-      handleAddCamera={handleAddCamera}
-      handleClosePopup={handleClosePopup}
-      isPopupOpen={isPopupOpen}
-      selectedImage={selectedImage}
-      handleFileChange={handleFileChange}
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      handleSubmitForm={handleSubmitForm}
-      setIsPopupOpen={setIsPopupOpen}
-      refetch={refetch}
-      visibleItems={visibleItems}
-      setVisibleItems={setVisibleItems}
-      isDataLoading={isDataLoading}
-      setIsDataLoading={setIsDataLoading}
-      handleClick={handleClick}
-      handleClose={handleClose}
-      anchorEl={anchorEl}
-      filters={filters}
-      handleFilterClick={handleFilterClick}
-      handleOrderClick={handleOrderClick}
-      setSearchTerm={setSearchTerm}
-    />
+    <>
+      {isProcessing ? <Loader isLoading text="Processing..." /> : null}
+      <DashBoard
+        data={data}
+        isLoading={isLoading}
+        isError={isError}
+        handleAddCamera={handleAddCamera}
+        handleClosePopup={handleClosePopup}
+        isPopupOpen={isPopupOpen}
+        selectedImage={selectedImage}
+        handleFileChange={handleFileChange}
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        handleSubmitForm={handleSubmitForm}
+        setIsPopupOpen={setIsPopupOpen}
+        refetch={refetch}
+        visibleItems={visibleItems}
+        setVisibleItems={setVisibleItems}
+        isDataLoading={isDataLoading}
+        setIsDataLoading={setIsDataLoading}
+        handleClick={handleClick}
+        handleClose={handleClose}
+        anchorEl={anchorEl}
+        filters={filters}
+        handleFilterClick={handleFilterClick}
+        handleOrderClick={handleOrderClick}
+        setSearchTerm={setSearchTerm}
+      />
+    </>
   );
 };
 
