@@ -8,7 +8,6 @@ const nextConfig = {
     buildActivity: false,
   },
   productionBrowserSourceMaps: false, // Removes source maps in production
-  output: 'standalone', // Enables standalone mode
 };
 
 export default nextConfig;
